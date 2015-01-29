@@ -38,16 +38,20 @@ public class CRequestHandler extends ChannelHandlerAdapter {
 		buf.skipBytes(2); // skip cmd and rsv
 		byte atyp = buf.readByte();
 		DstServer server = new DstServer();
-		server.setAtty(atyp);
+		server.setAtyp(atyp);
 		byte[] addr = null;
 		if (atyp == 1) { // ipv4
 			addr = new byte[4];
-		} else if (atyp == 04) { // ipv6
+			buf.readBytes(addr);
+		} else if (atyp == 4) { // ipv6
 			addr = new byte[6];
-		} else {
-			return null;
+			buf.readBytes(addr);
+		} else if (atyp == 3) { // domain
+			byte length = buf.readByte();
+			addr = new byte[length + 1];
+			addr[0] = length;
+			buf.readBytes(addr, 1, length);
 		}
-		buf.readBytes(addr);
 		server.setAddr(addr);
 		byte[] port = new byte[2];
 		buf.readBytes(port);

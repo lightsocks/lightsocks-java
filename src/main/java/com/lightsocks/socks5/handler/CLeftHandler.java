@@ -55,7 +55,7 @@ public class CLeftHandler extends ChannelHandlerAdapter implements
 		int headLength = 1 + addLen + portLen;
 		ByteBuf buf = ctx.alloc().buffer(headLength);
 		byte[] head = new byte[headLength];
-		head[0] = dst.getAtty();
+		head[0] = dst.getAtyp();
 		for (int i = 0; i < addLen; i++) {
 			head[1 + i] = dst.getAddr()[i];
 		}

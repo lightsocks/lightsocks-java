@@ -47,6 +47,7 @@ public class CRightHandler extends ChannelHandlerAdapter implements
 			}
 		}
 		if (isInitDecrptor) {
+
 			ByteBuf m = (ByteBuf) msg;
 			int validate = m.readInt(); // read the validate length
 			int length = m.readInt(); // read the content length

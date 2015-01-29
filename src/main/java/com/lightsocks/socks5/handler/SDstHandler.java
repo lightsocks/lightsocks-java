@@ -60,24 +60,36 @@ public class SDstHandler extends ChannelHandlerAdapter {
 		buf.readBytes(content);
 		byte[] res = decrpt.decrpt(content);
 
-		byte atty = res[0];
+		byte atyp = res[0];
 		DstServer server = new DstServer();
-		server.setAtty(atty);
+		server.setAtyp(atyp);
 
 		byte[] addr = null;
-		if (atty == 1) {
+		if (atyp == 1) {
 			addr = new byte[4];
-		} else if (atty == 04) {
+		} else if (atyp == 4) {
 			addr = new byte[6];
+		} else if (atyp == 3) {
+			byte domainLength = res[1];
+			addr = new byte[domainLength];
 		}
 		for (int i = 0; i < addr.length; i++) {
-			addr[i] = res[i + 1];
+			if (atyp == 1 || atyp == 4) {
+				addr[i] = res[i + 1];
+			} else if (atyp == 3) {
+				addr[i] = res[i + 2];
+			}
 		}
 		server.setAddr(addr);
 
 		byte[] port = new byte[2];
-		port[0] = res[1 + addr.length];
-		port[1] = res[2 + addr.length];
+		if (atyp == 1 || atyp == 4) {
+			port[0] = res[1 + addr.length];
+			port[1] = res[2 + addr.length];
+		} else if (atyp == 3) {
+			port[0] = res[2 + addr.length];
+			port[1] = res[3 + addr.length];
+		}
 		server.setPort(port);
 		buf.release();
 		return server;
