@@ -53,10 +53,10 @@ public class SDstHandler extends ChannelHandlerAdapter {
 		if (buf.readableBytes() < 8) {
 			return null;
 		}
-		int validate = buf.readInt();// validate length;
-		buf.readInt();
+		buf.readInt();// validate length;
+		int length = buf.readInt();
 
-		byte[] content = new byte[validate];
+		byte[] content = new byte[length];
 		buf.readBytes(content);
 		byte[] res = decrpt.decrpt(content);
 
