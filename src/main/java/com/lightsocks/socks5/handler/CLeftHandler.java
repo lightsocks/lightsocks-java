@@ -45,14 +45,18 @@ public class CLeftHandler extends ChannelHandlerAdapter implements
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 			throws Exception { // (2)
-			ByteBuf buf = ((ByteBuf) msg);
-			forwardWriter.forward(buf);
+		ByteBuf buf = ((ByteBuf) msg);
+		forwardWriter.forward(buf);
 	}
 
 	private void sendDstAddress() throws Exception {
 		int addLen = dst.getAddr().length;
 		int portLen = dst.getPort().length;
 		int headLength = 1 + addLen + portLen;
+		if (headLength > 16) {
+			int padding = 16 - headLength % 16;
+			headLength += padding;
+		}
 		ByteBuf buf = ctx.alloc().buffer(headLength);
 		byte[] head = new byte[headLength];
 		head[0] = dst.getAtyp();
@@ -60,7 +64,7 @@ public class CLeftHandler extends ChannelHandlerAdapter implements
 			head[1 + i] = dst.getAddr()[i];
 		}
 		for (int i = 0; i < portLen; i++) {
-			head[headLength - 2 + i] = dst.getPort()[i];
+			head[addLen + 1 + i] = dst.getPort()[i];
 		}
 		buf.writeBytes(head);
 		forwardWriter.forward(buf);
