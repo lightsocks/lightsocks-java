@@ -1,9 +1,9 @@
 ## lightsocks-java
-A light proxy that helps you bypass firewalls.
+A fast proxy that helps you bypass firewalls.
 
 At first, i want to plan implementing the shadowsocks protocol  which is used to many popular tools  [shadowsocks](https://github.com/clowwindy/shadowsocks) .  I find the AES encrpt/decrpt stream  will not end if the src bytes length  is less than 16  when invoke update method of JCE cipher (aes-cfb-128）, this will cause some problems like the connection will wait for the rest data but it is cached in buff. After i read the [shadowsocks-go](https://github.com/shadowsocks/shadowsocks-go) code  I also find that shadowsocks handshaking process designed  not good engough when the destination address the server can't not reach but the data has transfered  from broswer to proxy client.
 
-After some thinking , i made a decision that develp the tool use a new protocal  below:<br>
+After some thinking , i make a decision that develp the tool use a new protocal  below:<br>
  *  the handshake will be ended not only the client and server have exchanged  iv but also the server side has connect the            destination server.
  *  each packet has two field plus .One is the validate length of encrpted data ,the other is the total length. This design has       much benefit when use other language.
 
