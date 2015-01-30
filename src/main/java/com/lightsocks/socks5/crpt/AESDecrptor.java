@@ -26,7 +26,7 @@ public class AESDecrptor {
 		m_aesCipher.init(Cipher.DECRYPT_MODE, m_aesKey, m_aesIv);
 	}
 
-	public byte[] decrpt(byte[] src) throws Exception {
+	public byte[] decrpt(byte[] src) throws IllegalStateException {
 		return m_aesCipher.update(src);
 	}
 

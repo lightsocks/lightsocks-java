@@ -27,11 +27,11 @@ public class AESEncrptor {
 		m_aesCipher.init(Cipher.ENCRYPT_MODE, m_aesKey, m_aesIv);
 	}
 
-	public byte[] encrpt(byte[] src) throws Exception {
+	public byte[] encrpt(byte[] src) throws IllegalStateException {
 			return m_aesCipher.update(src);
 	}
 
-	public byte[] encrpt(byte[] src, int offset, int length) throws Exception {
+	public byte[] encrpt(byte[] src, int offset, int length) throws IllegalStateException {
 		return m_aesCipher.update(src, offset, length);
 	}
 
