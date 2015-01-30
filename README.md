@@ -5,7 +5,7 @@ At first, i plan implementing the shadowsocks protocol  which is used to many po
 
 After some thinking , i make a decision that develp the tool use a new protocal  below:<br>
  *  the handshake will be ended not only the client and server have exchanged  iv but also the server side has connect the            destination server.
- *  each packet has two field plus .One is the validate length of encrpted data ,the other is the total length. This design has       much benefit when use other languages.
+ *  each packet has two field plus .One is the validate length of encrpted data ,the other is the total length. This design has       much benefit when writing network program.
 
 ### System requirements
  *  Java 8 (if your use jdk5/jdk6/jdk7, make surce it can compile success, other wise,you should  modify the code. )
