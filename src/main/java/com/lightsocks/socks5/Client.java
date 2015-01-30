@@ -37,21 +37,21 @@ public class Client {
 		}
 	}
 
-	public static void printUsage() {
+	private static void printUsage() {
 		StringBuilder help = new StringBuilder();
-		help.append("Usage of shadowsocks-client: java -jar socks5-0.1-SNAPSHOT.jar \r\n");
+		help.append("Usage of lightsocks-client: java -jar lightsocks-client.jar \r\n");
 		help.append("-c=config.properties            specify config file \r\n");
 		help.append("-s=192.168.1.102                server address \r\n");
 		help.append("-p=8888                         server port \r\n");
-		help.append("-k=password!01                  password \r\n");
+		help.append("-k=Password!01                  password \r\n");
 		help.append("-i=127.0.0.1                    local address \r\n");
 		help.append("-l=1080                         local socks5 proxy port \r\n");
 		help.append("-m=aes-cfb-128                  default aes-cfb-128 \r\n");
 		help.append("if there is no args,application will search config.properties in classpath.");
-		s_logger.info(help.toString());
+		System.out.println(help.toString());
 	}
 
-	public static boolean checkParams(ConfigUtil util) {
+	private static boolean checkParams(ConfigUtil util) {
 		Config config = new Config();
 		if (util.getValue("-s") != null) {
 			config.setServerIp(util.getValue("-s"));
