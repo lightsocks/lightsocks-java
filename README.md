@@ -1,14 +1,14 @@
 ## lightsocks-java
 A fast proxy that helps you bypass firewalls.
 
-At first, i plan implementing the shadowsocks protocol  which is used to many popular tools  [shadowsocks](https://github.com/shadowsocks/) .  I find the AES encrpt/decrpt stream  will not end if the src bytes length  is less than 16  when invoke update method of JCE cipher (aes-cfb-128）, this will cause some problems , the connection will wait for the rest data but it is cached in the buff e.g.  By reading the [shadowsocks-go](https://github.com/shadowsocks/shadowsocks-go) code  I also find  shadowsocks handshaking process designed  not good engough when the server can't not reach the destination address  but the data has been transfered  from broswer to proxy client.
+At first, i plan implementing the shadowsocks protocol  which is widely used many popular tools  [shadowsocks](https://github.com/shadowsocks/) .  I find the AES encrpt/decrpt stream  will not end if the src bytes length  is less than 16  when invoke update method of JCE cipher (aes-cfb-128）, this will cause some problems , the connection will wait for the rest data but it is cached in the buff .  By reading the [shadowsocks-go](https://github.com/shadowsocks/shadowsocks-go) code  I also find  shadowsocks handshaking process designed  not good engough if the server can't not reach the destination address  but the data has been transfered  from broswer to proxy client.
 
-After some thinking , i make a decision that develp the tool use a new protocal  below:<br>
- *  the handshake will be ended not only the client and server have exchanged  iv but also the server side has connect the            destination server.
- *  each packet has two field plus .One is the validate length of encrpted data ,the other is the total length. This design has       much benefit when writing network program.
+After some thinking , i make a decision to develp the tool use a new protocal  below:<br>
+ *  the handshake shoul be ended not only the client and server have been exchanged  iv but also the server side has been           connected the destination server.
+ *  each packet has two field plus .One is the validate length of encrpted data ,the other is the total length. This design has       much benefit when writing network programs.
 
 ### System requirements
- *  Java 8 (if your use jdk5/jdk6/jdk7, make surce it can compile success, other wise,you should  modify the code. )
+ *  Java 8 (make surce compile success if your use jdk5/jdk6/jdk7 , other wise,you should  modify the source code. )
  *  maven
 
 ### How to build
@@ -21,11 +21,11 @@ On Client
 
 mvn package -Pclient
 ```
-this tool is implemented by netty , you can get it more from [netty.io](http://netty.io),there is alao a [maven-shade-plugin](maven.apache.org/plugins/maven-shade-plugin/) for packaging the dependency class into jar together.
+this tool is implemented by netty , you can get more information from [netty.io](http://netty.io),there is alao a maven plugin [maven-shade-plugin](maven.apache.org/plugins/maven-shade-plugin/) for packaging the dependency  into one jar .
 
 ### How to use
 
-Both the server and client tool will search config.properties in the current directory or classpath. You can use -c option to specify another configuration file. Download the sample [config.properties](https://github.com/lightsocks/lightsocks-java/blob/master/src/main/resources/config.properties), change the following values:
+Both the server and client tool will look for  config.properties in the current directory or classpath. You can use -c option to specify another configuration file. Download the sample [config.properties](https://github.com/lightsocks/lightsocks-java/blob/master/src/main/resources/config.properties), change the following values as you wish:
 
 server.ip &nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;server ip or hostname<br>
 server.port &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;server port<br>
