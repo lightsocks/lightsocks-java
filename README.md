@@ -1,7 +1,7 @@
 ## lightsocks-java
 A fast proxy that helps you bypass firewalls.
 
-At first, i plan implementing the shadowsocks protocol  which is used to many popular tools  [shadowsocks](https://github.com/clowwindy/shadowsocks) .  I find the AES encrpt/decrpt stream  will not end if the src bytes length  is less than 16  when invoke update method of JCE cipher (aes-cfb-128）, this will cause some problems , the connection will wait for the rest data but it is cached in the buff e.g.  By reading the [shadowsocks-go](https://github.com/shadowsocks/shadowsocks-go) code  I also find  shadowsocks handshaking process designed  not good engough when the server can't not reach the destination address  but the data has been transfered  from broswer to proxy client.
+At first, i plan implementing the shadowsocks protocol  which is used to many popular tools  [shadowsocks](https://github.com/shadowsocks/) .  I find the AES encrpt/decrpt stream  will not end if the src bytes length  is less than 16  when invoke update method of JCE cipher (aes-cfb-128）, this will cause some problems , the connection will wait for the rest data but it is cached in the buff e.g.  By reading the [shadowsocks-go](https://github.com/shadowsocks/shadowsocks-go) code  I also find  shadowsocks handshaking process designed  not good engough when the server can't not reach the destination address  but the data has been transfered  from broswer to proxy client.
 
 After some thinking , i make a decision that develp the tool use a new protocal  below:<br>
  *  the handshake will be ended not only the client and server have exchanged  iv but also the server side has connect the            destination server.
@@ -44,8 +44,7 @@ java -jar lightsocks-client.jar -c=config.propeties
 Change proxy settings of your browser to
 SOCKS5 127.0.0.1:local.port
 ```
-### End
- I hope you can spare some idle time reading the code and pull request much appreciate!
+
  
 ### Reference
 [rfc1928](http://www.ietf.org/rfc/rfc1928.txt)
