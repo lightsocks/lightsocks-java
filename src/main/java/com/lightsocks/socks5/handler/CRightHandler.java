@@ -1,6 +1,7 @@
 package com.lightsocks.socks5.handler;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -53,8 +54,7 @@ public class CRightHandler extends ChannelHandlerAdapter implements
 			int length = m.readInt(); // read the content length
 			byte[] content = new byte[length];
 			m.readBytes(content);
-			ByteBuf buf = ctx.alloc().buffer(validate);
-			buf.writeBytes(decrpt.decrpt(content), 0, validate);
+			ByteBuf buf = Unpooled.wrappedBuffer(decrpt.decrpt(content), 0, validate);
 			forwardWriter.forward(buf);
 		}
 

@@ -2,6 +2,8 @@ package com.lightsocks.socks5.handler;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
@@ -146,10 +148,11 @@ public class SLeftHandler extends ChannelHandlerAdapter implements
 	}
 
 	private void write(byte[] data, int validate) {
-		ByteBuf buf = ctx.alloc().buffer(8 + data.length);
-		buf.writeInt(validate);
-		buf.writeInt(data.length);
-		buf.writeBytes(data);
+		ByteBuf len = ctx.alloc().buffer(8);
+		len.writeInt(validate);
+		len.writeInt(data.length);
+		ctx.writeAndFlush(len);
+		ByteBuf buf = Unpooled.wrappedBuffer(data);
 		ctx.writeAndFlush(buf);
 	}
 
