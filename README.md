@@ -21,7 +21,7 @@ On Client
 
 mvn package -Pclient
 ```
-this tool is implemented by netty , you can get more information from [netty.io](http://netty.io),there is alao a maven plugin [maven-shade-plugin](maven.apache.org/plugins/maven-shade-plugin/) for packaging the dependency  into one jar .
+this tool is implemented by netty , you can get more information from [netty.io](http://netty.io),there is alao a maven plugin [maven-shade-plugin](http://maven.apache.org/plugins/maven-shade-plugin/) for packaging the dependency  into one jar .
 
 ### How to use
 
