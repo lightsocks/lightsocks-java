@@ -1,14 +1,14 @@
 ## lightsocks-java
 A fast proxy that helps you bypass firewalls.
 
-At first, i plan implementing the shadowsocks protocol  which is widely used many popular tools  [shadowsocks](https://github.com/shadowsocks/) .  I find the AES encrpt/decrpt stream  will not end if the src bytes length  is less than 16  when invoke update method of JCE cipher (aes-cfb-128）, this will cause some problems , the connection will wait for the rest data but it is cached in the buff .  By reading the [shadowsocks-go](https://github.com/shadowsocks/shadowsocks-go) code  I also find  shadowsocks handshaking process designed  not good engough if the server can't not reach the destination address  but the data has been transfered  from broswer to proxy client.
+At first, i plan implementing the shadowsocks protocol  which is widely used many popular tools  [shadowsocks](https://github.com/shadowsocks/) .  I find the AES encrpt/decrpt stream  will not end if the src bytes length  is less than 16  when invoke update method of JCE cipher (aes-cfb-128）, this will cause some problems , the connection will wait for the rest data but it is cached in the buff .  By reading the [shadowsocks-go](https://github.com/shadowsocks/shadowsocks-go) code  I also find  shadowsocks handshake process designed  not good engough if the server can't not reach the destination address  but the data has been transfered  from broswer to proxy client.
 
 After some thinking , i make a decision to develp the tool use a new protocal  below:<br>
  *  the handshake should be ended not only the client and server have been exchanged  iv but also the server side has been           connected the destination server.
  *  each packet has two field plus .One is the validate length of encrpted data ,the other is the total length. This design has       much benefit when writing network programs.
 
 ### System requirements
- *  Java 8 (make surce compile success if your use jdk5/jdk6/jdk7 , other wise,you should  modify the source code. )
+ *  Java 8 (make sure compile success if your use jdk5/jdk6/jdk7 , other wise,you should  modify the source code. )
  *  maven
 
 ### How to build
