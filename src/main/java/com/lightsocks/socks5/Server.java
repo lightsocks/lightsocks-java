@@ -24,7 +24,6 @@ public class Server {
 	private static EventLoopGroup bossGroup = new NioEventLoopGroup(); // (1)
 	private static EventLoopGroup workerGroup = new NioEventLoopGroup();
 	private static EventLoopGroup workerGroup2 = new NioEventLoopGroup();
-	// private static String serverIp = "50.116.15.15";
 	public static Config AppConfig = null;
 
 	public static void main(String[] args) throws Exception {

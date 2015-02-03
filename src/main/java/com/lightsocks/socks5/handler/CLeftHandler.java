@@ -19,7 +19,6 @@ public class CLeftHandler extends ChannelHandlerAdapter implements
 		ForwardAdapter {
 	private ChannelHandlerContext ctx;
 	private ForwardAdapter forwardWriter;
-	private volatile boolean isForwardRead = false;
 	private DstServer dst;
 	private volatile boolean close = false;
 
