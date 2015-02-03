@@ -8,7 +8,7 @@ After some thinking , i make a decision to develp the tool use a new protocal  b
  *  each packet has two field plus .One is the validate length of encrpted data ,the other is the total length. This design has       much benefit when writing network programs.
 
 ### System requirements
- *  Java 8 (make sure compile success if your use jdk5/jdk6/jdk7 , other wise,you should  modify the source code. )
+ *  Java 7+ 
  *  maven
 
 ### How to build
