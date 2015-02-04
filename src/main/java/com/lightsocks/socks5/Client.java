@@ -12,6 +12,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import java.util.logging.Logger;
 
 import com.lightsocks.socks5.bean.Config;
+import com.lightsocks.socks5.crpt.CrptorParam;
+import com.lightsocks.socks5.crpt.CrptorUtil;
 import com.lightsocks.socks5.handler.CHandShakeHandler;
 import com.lightsocks.socks5.util.ConfigUtil;
 
@@ -28,8 +30,8 @@ public class Client {
 		ConfigUtil util = new ConfigUtil();
 		util.parseConfig(args);
 		if (checkParams(util)) {
-			new ClientListener(AppConfig.getLocalIp(), AppConfig.getLocalPort(), bossGroup, workerGroup)
-					.run();
+			new ClientListener(AppConfig.getLocalIp(),
+					AppConfig.getLocalPort(), bossGroup, workerGroup).run();
 		} else if (util.getValue("-h") != null || util.getValue("--h") != null
 				|| util.getValue("-help") != null
 				|| util.getValue("--help") != null) {
@@ -83,21 +85,20 @@ public class Client {
 		} else {
 			config.setLocalIp("127.0.0.1");
 		}
-
-		if (util.getValue("-m") != null) {
-			if (util.getValue("-m").equalsIgnoreCase("aes-cfb-128")) {
-				config.setMode("AES/CFB128/NoPadding");
-			} // to do
-		} else {
-			config.setMode("AES/CFB128/NoPadding");
+		
+		String mode = util.getValue("-m");
+		if (mode == null) {
+			mode = "aes-cfb-128";
 		}
+		CrptorParam param = CrptorUtil.getCrptorParam(mode);
+		config.setCrptorParam(param);
 		AppConfig = config;
 		return true;
 	}
 
 	private final static class ClientListener {
-		private static final Logger s_logger = Logger.getLogger(ClientListener.class
-				.getName());
+		private static final Logger s_logger = Logger
+				.getLogger(ClientListener.class.getName());
 
 		private EventLoopGroup bossGroup;
 		private EventLoopGroup workerGroup;

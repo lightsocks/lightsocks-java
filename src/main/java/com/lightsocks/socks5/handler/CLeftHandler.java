@@ -93,7 +93,7 @@ public class CLeftHandler extends ChannelHandlerAdapter implements
 		try {
 			sendDstAddress();
 		} catch (Exception ex) {
-
+			ex.printStackTrace();
 		}
 	}
 

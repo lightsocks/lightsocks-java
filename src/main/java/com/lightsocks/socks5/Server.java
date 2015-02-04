@@ -13,6 +13,8 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import java.util.logging.Logger;
 
 import com.lightsocks.socks5.bean.Config;
+import com.lightsocks.socks5.crpt.CrptorParam;
+import com.lightsocks.socks5.crpt.CrptorUtil;
 import com.lightsocks.socks5.handler.SIVHandler;
 import com.lightsocks.socks5.util.ConfigUtil;
 
@@ -71,13 +73,13 @@ public class Server {
 			s_logger.info("must specify password");
 			return false;
 		}
-		if (util.getValue("-m") != null) {
-			if (util.getValue("-m").equalsIgnoreCase("aes-cfb-128")) {
-				config.setMode("AES/CFB128/NoPadding");
-			} // to do
-		} else {
-			config.setMode("AES/CFB128/NoPadding");
+		
+		String mode = util.getValue("-m");
+		if (mode == null) {
+			mode = "aes-cfb-128";
 		}
+		CrptorParam param = CrptorUtil.getCrptorParam(mode);
+		config.setCrptorParam(param);
 		AppConfig = config;
 		return true;
 	}

@@ -6,12 +6,13 @@ import io.netty.channel.ChannelHandlerContext;
 
 import com.lightsocks.socks5.Server;
 import com.lightsocks.socks5.bean.DstServer;
-import com.lightsocks.socks5.crpt.AESDecrptor;
+import com.lightsocks.socks5.crpt.Icrptor;
+import com.lightsocks.socks5.crpt.IcrptorImp;
 import com.lightsocks.socks5.crpt.KeyUtil;
 
 public class SDstHandler extends ChannelHandlerAdapter {
 	private byte[] iv;
-	private AESDecrptor decrpt;
+	private Icrptor decrpt;
 
 	public SDstHandler(byte[] iv) {
 		this.iv = iv;
@@ -41,9 +42,10 @@ public class SDstHandler extends ChannelHandlerAdapter {
 	}
 
 	private void initDecrptor(byte[] iv) throws Exception {
-		decrpt = new AESDecrptor(KeyUtil.evpBytesToKey(
-				Server.AppConfig.getPassword(), 16), iv,
-				Server.AppConfig.getMode());
+		decrpt = new IcrptorImp(KeyUtil.evpBytesToKey(Server.AppConfig
+				.getPassword(), Server.AppConfig.getCrptorParam().getKeyLen()),
+				iv, Server.AppConfig.getCrptorParam().getMode(),
+				Server.AppConfig.getCrptorParam().getType(), 1);
 		decrpt.init();
 	}
 
@@ -58,7 +60,7 @@ public class SDstHandler extends ChannelHandlerAdapter {
 
 		byte[] content = new byte[length];
 		buf.readBytes(content);
-		byte[] res = decrpt.decrpt(content);
+		byte[] res = decrpt.update(content);
 
 		byte atyp = res[0];
 		DstServer server = new DstServer();

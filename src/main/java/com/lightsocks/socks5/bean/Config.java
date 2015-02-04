@@ -1,5 +1,7 @@
 package com.lightsocks.socks5.bean;
 
+import com.lightsocks.socks5.crpt.CrptorParam;
+
 public class Config {
 
 	private String serverIp;
@@ -13,6 +15,8 @@ public class Config {
 	private String password;
 	
 	private String mode;
+	
+	private CrptorParam crptorParam;
 
 	public String getServerIp() {
 		return serverIp;
@@ -60,5 +64,13 @@ public class Config {
 
 	public void setMode(String mode) {
 		this.mode = mode;
+	}
+
+	public CrptorParam getCrptorParam() {
+		return crptorParam;
+	}
+
+	public void setCrptorParam(CrptorParam crptorParam) {
+		this.crptorParam = crptorParam;
 	}
 }

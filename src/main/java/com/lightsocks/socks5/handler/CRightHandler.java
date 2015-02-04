@@ -8,15 +8,15 @@ import io.netty.channel.ChannelHandlerContext;
 import java.util.Random;
 
 import com.lightsocks.socks5.Client;
-import com.lightsocks.socks5.crpt.AESDecrptor;
-import com.lightsocks.socks5.crpt.AESEncrptor;
+import com.lightsocks.socks5.crpt.Icrptor;
+import com.lightsocks.socks5.crpt.IcrptorImp;
 import com.lightsocks.socks5.crpt.KeyUtil;
 
 public class CRightHandler extends ChannelHandlerAdapter implements
 		ForwardAdapter {
 
-	private AESDecrptor decrpt;
-	private AESEncrptor encrptor;
+	private Icrptor decrpt;
+	private Icrptor encrptor;
 	private ChannelHandlerContext ctx;
 	private ForwardAdapter forwardWriter;
 	private volatile boolean isInitEncrptor = false;
@@ -54,7 +54,7 @@ public class CRightHandler extends ChannelHandlerAdapter implements
 			int length = m.readInt(); // read the content length
 			byte[] content = new byte[length];
 			m.readBytes(content);
-			ByteBuf buf = Unpooled.wrappedBuffer(decrpt.decrpt(content), 0, validate);
+			ByteBuf buf = Unpooled.wrappedBuffer(decrpt.update(content), 0, validate);
 			forwardWriter.forward(buf);
 		}
 
@@ -83,12 +83,12 @@ public class CRightHandler extends ChannelHandlerAdapter implements
 			isInitEncrptor = true;
 		}
 		int total = m.readableBytes();
-		int left = total % 16;
+		int left = total % Client.AppConfig.getCrptorParam().getKeyLen();
 		int first = total - left;
 		if (first != 0) {
 			byte[] firstBulk = new byte[first];
 			m.readBytes(firstBulk);
-			byte[] dst = encrptor.encrpt(firstBulk);
+			byte[] dst = encrptor.update(firstBulk);
 			if (dst != null) {
 				write(dst,first);
 				
@@ -97,11 +97,11 @@ public class CRightHandler extends ChannelHandlerAdapter implements
 		if (left != 0) {
 			byte[] LeftBulk = new byte[left];
 			m.readBytes(LeftBulk);
-			byte[] end = new byte[16];
+			byte[] end = new byte[Client.AppConfig.getCrptorParam().getKeyLen()];
 			for (int i = 0; i < left; i++) {
 				end[i] = LeftBulk[i];
 			}
-			byte[] dst = encrptor.encrpt(end);
+			byte[] dst = encrptor.update(end);
 			if (dst != null) {
 				write(dst,left);
 			}
@@ -124,15 +124,21 @@ public class CRightHandler extends ChannelHandlerAdapter implements
 	}
 
 	private void initEncrptor() throws Exception {
-		byte[] iv = new byte[16];
+		byte[] iv = new byte[Client.AppConfig.getCrptorParam().getIvLen()];
 		Random random1 = new Random(256);
 		random1.nextBytes(iv);
-		encrptor = new AESEncrptor(KeyUtil.evpBytesToKey(Client.AppConfig.getPassword(),16), iv, Client.AppConfig.getMode());
+		encrptor = new IcrptorImp(KeyUtil.evpBytesToKey(Client.AppConfig
+				.getPassword(), Client.AppConfig.getCrptorParam().getKeyLen()),
+				iv, Client.AppConfig.getCrptorParam().getMode(),
+				Client.AppConfig.getCrptorParam().getType(), 0);
 		encrptor.init();
 	}
 
 	private void initDecrptor(byte[] iv) throws Exception {
-		decrpt = new AESDecrptor(KeyUtil.evpBytesToKey(Client.AppConfig.getPassword(),16), iv, Client.AppConfig.getMode());
+		decrpt = new IcrptorImp(KeyUtil.evpBytesToKey(Client.AppConfig
+				.getPassword(), Client.AppConfig.getCrptorParam().getKeyLen()),
+				iv, Client.AppConfig.getCrptorParam().getMode(),
+				Client.AppConfig.getCrptorParam().getType(), 1);
 		decrpt.init();
 	}
 
