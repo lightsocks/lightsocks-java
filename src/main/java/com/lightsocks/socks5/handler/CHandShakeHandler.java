@@ -37,10 +37,12 @@ public class CHandShakeHandler extends ChannelHandlerAdapter {
 	private boolean handShake(ChannelHandlerContext ctx, Object msg) {
 		ByteBuf buf = ((ByteBuf) msg);
 		if (buf.readableBytes() < 2) {
+			buf.release();
 			return false;
 		}
 		byte v = buf.readByte();
 		if (v != 5) {
+			buf.release();
 			return false;
 		}
 		byte nmethod = buf.readByte();

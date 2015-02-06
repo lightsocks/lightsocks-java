@@ -19,6 +19,7 @@ public class SIVHandler extends ChannelHandlerAdapter {
 	private byte[] recvIV(ChannelHandlerContext ctx, Object msg) {
 		ByteBuf buf = (ByteBuf) msg;
 		if (buf.readableBytes() < 8) {
+			buf.release();
 			return null;
 		}
 		int validate = buf.readInt(); // read the validate length

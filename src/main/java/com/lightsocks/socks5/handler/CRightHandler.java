@@ -54,6 +54,7 @@ public class CRightHandler extends ChannelHandlerAdapter implements
 			int length = m.readInt(); // read the content length
 			byte[] content = new byte[length];
 			m.readBytes(content);
+			m.release();
 			ByteBuf buf = Unpooled.wrappedBuffer(decrpt.update(content), 0, validate);
 			forwardWriter.forward(buf);
 		}
@@ -106,6 +107,7 @@ public class CRightHandler extends ChannelHandlerAdapter implements
 				write(dst,left);
 			}
 		}
+		m.release();
 	}
 
 	public void attach(ForwardAdapter target) {

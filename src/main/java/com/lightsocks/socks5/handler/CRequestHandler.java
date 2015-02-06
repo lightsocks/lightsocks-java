@@ -33,6 +33,7 @@ public class CRequestHandler extends ChannelHandlerAdapter {
 		ByteBuf buf = ((ByteBuf) msg);
 		byte v = buf.readByte();
 		if (v != 5) {
+			buf.release();
 			return null;
 		}
 		buf.skipBytes(2); // skip cmd and rsv

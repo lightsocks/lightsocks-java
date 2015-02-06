@@ -53,6 +53,7 @@ public class SDstHandler extends ChannelHandlerAdapter {
 			throws Exception {
 		ByteBuf buf = ((ByteBuf) msg);
 		if (buf.readableBytes() < 8) {
+			buf.release();
 			return null;
 		}
 		buf.readInt();// validate length;
