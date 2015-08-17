@@ -42,7 +42,7 @@ On Client
 java -jar lightsocks-client.jar -c=config.propeties
 
 Change proxy settings of your browser to
-SOCKS5 127.0.0.1:local.port
+SOCKS5 127.0.0.1:8888
 ```
 
  
