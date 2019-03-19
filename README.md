@@ -3,8 +3,12 @@ A fast proxy that helps you bypass firewalls.
 
 
 ### System requirements
- *  Java 7+ 
+ *  Java 7+
  *  maven
+
+### quickstart
+Run the script server_start.sh or client_start.sh on terminal.
+Change setttings through [src/main/resources/config.properties](https://github.com/lightsocks/lightsocks-java/blob/master/src/main/resources/config.properties),see the detail below.
 
 ### How to build
 ```
@@ -12,7 +16,7 @@ On Server
 
 mvn package -Pserver
 
-On Client 
+On Client
 
 mvn package -Pclient
 ```
@@ -31,15 +35,15 @@ local.port &nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;local socks5 prox
 
 ```
 On Server
-java -jar lightsocks-server.jar -c=config.propeties
+java -jar lightsocks-server.jar -c=config.properties
 
 On Client
-java -jar lightsocks-client.jar -c=config.propeties
+java -jar lightsocks-client.jar -c=config.properties
 
 Change proxy settings of your browser to
 SOCKS5 127.0.0.1:8888
 ```
 
- 
+
 ### Reference
 [rfc1928](http://www.ietf.org/rfc/rfc1928.txt)
