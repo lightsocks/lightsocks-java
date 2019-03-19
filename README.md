@@ -6,9 +6,8 @@ A fast proxy that helps you bypass firewalls.
  *  Java 7+
  *  maven
 
-### quickstart
-Run the script server_start.sh or client_start.sh on terminal.
-Change setttings through [src/main/resources/config.properties](https://github.com/lightsocks/lightsocks-java/blob/master/src/main/resources/config.properties),see the detail below.
+### Quickstart
+Run the script server_start.sh or client_start.sh on terminal,change setttings through [src/main/resources/config.properties](https://github.com/lightsocks/lightsocks-java/blob/master/src/main/resources/config.properties),see the detail below.
 
 ### How to build
 ```
@@ -43,7 +42,8 @@ java -jar lightsocks-client.jar -c=config.properties
 Change proxy settings of your browser to
 SOCKS5 127.0.0.1:8888
 ```
-
+### Proxy settings
+Use SwitchyOmega Plugin on chrome is quite helpful.
 
 ### Reference
 [rfc1928](http://www.ietf.org/rfc/rfc1928.txt)
